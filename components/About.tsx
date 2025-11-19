@@ -21,9 +21,15 @@ export default function About({ title, description, director, episodes, imageUrl
         <Text style={styles().text}>
             {description}
         </Text>
+        <View style={{ marginVertical: 10 }}></View>
+
         <Text style={[styles().text, { fontWeight: 'bold', marginBottom: 10 }]}>Episodes:</Text>
-        {epidodeList.map((episode: { title: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; duration: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; }) => (
-            <Text style={[styles().text, { fontWeight: '600' }]}>{episode.title} ({episode.duration})</Text>
+
+        {epidodeList.map((episode: { title: string; duration: string; description: string }) => (
+            <View style={styles().episodeBox}>
+                <Text style={[styles().text, { fontWeight: '600', marginBottom: 5 }]}>{episode.title} ({episode.duration})</Text>
+                <Text style={styles().subText}>{episode.description}</Text>
+            </View>
         ))}
     </View>
   );
@@ -49,6 +55,11 @@ const styles = () => {
         textAlign: 'center',
         color: Colors[colorScheme ?? 'light'].onSecondaryContainer,
     },
+    subText: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: Colors[colorScheme ?? 'light'].onSecondaryContainer,
+    },
     helpContainer: {
         marginTop: 15,
         marginHorizontal: 20,
@@ -65,6 +76,13 @@ const styles = () => {
         height: 375,
         borderRadius: 10,
         alignSelf: 'center',
+    },
+    episodeBox: {
+        marginBottom: 2,
+        backgroundColor: Colors[colorScheme ?? 'light'].surfaceContainerLow,
+        padding: 10,
+        borderRadius: 5,
+        width: 300,
     },
   });
 }
