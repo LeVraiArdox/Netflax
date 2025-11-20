@@ -36,7 +36,7 @@ const Card = ({ serie }: { serie: Serie }) => {
     <View style={styles.card}>
       <Text style={styles.titleText}>{serie.title}</Text>
       <Text style={styles.descText}>{serie.description}</Text>
-      <Image style={styles.image} source={{ uri: serie.image || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
+      <Image style={styles.image} source={{ uri: serie.image || require("@/assets/images/placeholder.png") }} />
       <Link href={{
         pathname: '/modal',
         params: { title: serie.title, description: serie.description, director: serie.director, episodesInfos: JSON.stringify(serie.episodesInfos), image: serie.image, type: 'series'}}} asChild>

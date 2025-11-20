@@ -26,7 +26,10 @@ const Card = ({ film }: { film: Film }) => {
     <View style={styles.card}>
       <Text style={styles.titleText}>{film.title}</Text>
       <Text style={styles.descText}>{film.description}</Text>
-      <Image style={styles.image} source={{ uri: film.image || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
+      <Image 
+        style={styles.image} 
+        source={film.image ? { uri: film.image } : require("@/assets/images/placeholder.png")} 
+      />
       <Link href={{
         pathname: '/modal',
         params: { title: film.title, description: film.description, director: film.director, image: film.image, type: 'film' },

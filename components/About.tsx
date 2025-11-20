@@ -8,11 +8,13 @@ import { Episode } from './Series';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 
+import VideoScreen from './Video';
+
 export default function About({ title, description, director, episodesInfos, image, type }: { title: string; description: string; director: string; episodesInfos: Episode[]; image: string; type: string }) {
   const episodeList: Array<Episode> = episodesInfos !== undefined ? Array.isArray(episodesInfos) ? episodesInfos : JSON.parse(episodesInfos as unknown as string) : [];
   return (
       <View style={styles().getStartedContainer}>
-        <Image source={{ uri: image || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} style={styles().image} />
+        <Image source={{ uri: image || require("@/assets/images/placeholder.png") }} style={styles().image} />
 
         <View style={{ marginVertical: 20 }}></View>
 
@@ -35,6 +37,8 @@ export default function About({ title, description, director, episodesInfos, ima
                 </View>
             </>
         )}
+
+        <VideoScreen />
     </View>
   );
 }
