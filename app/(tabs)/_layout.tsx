@@ -116,6 +116,24 @@ export default function TabLayout() {
         tabBarIcon: ({ color }) => <TabBarIcon name="local-movies" color={color} />,
       }}
       />
+      <Tabs.Screen
+      name="user"
+      options={{
+        headerTitle: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Image
+          source={require('@/assets/images/netflix-sigle.png')} 
+          style={{ width: 60, height: 34 }}
+          resizeMode="contain"
+        />
+        <Text style={{ marginLeft: 10, fontSize: 18, fontWeight: 'bold', color: Colors[colorScheme ?? 'light'].onSecondaryContainer }}>
+          Votre espace
+        </Text>
+        </View>
+        ),
+        tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+      }}
+      />
     </Tabs>
   );
 }

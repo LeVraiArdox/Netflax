@@ -25,7 +25,7 @@ export default function ModalScreen() {
       <View style={style.container}>
         <Text style={style.title}>{title}</Text>
         <View style={style.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <About title={title} description={description} director={director} episodesInfos={episodesInfos} image={image} type={''}/>
+        <About description={description} episodesInfos={episodesInfos} image={image} />
       </View>
     </ScrollView>
   );
@@ -45,6 +45,7 @@ const styles = () => {
       fontSize: 30,
       fontWeight: 'bold',
       color: Colors[colorScheme ?? 'light'].primary,
+      marginTop: 30,
     },
     separator: {
       marginVertical: 30,
