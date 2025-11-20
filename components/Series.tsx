@@ -7,6 +7,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialIcons } from '@expo/vector-icons';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import M3SearchBar from './M3SearchBar';
+import Filter from './Filter';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ export type Serie = {
   director: string;
   episodesInfos: Episode[];
   image: string;
+  popularity?: number;
 };
 
 export type Episode = {
@@ -48,7 +50,7 @@ const Card = ({ serie }: { serie: Serie }) => {
 };
 
 
-function SeriesList({ searchQuery }: { searchQuery: string }) {
+function SeriesList({ searchQuery, filterBy }: { searchQuery: string; filterBy: string }) {
   const colorScheme = useColorScheme();
   const styles = getStyles(colorScheme);
 
@@ -70,6 +72,14 @@ function SeriesList({ searchQuery }: { searchQuery: string }) {
 
   const filteredSeries = (series || []).filter((serie) => 
     serie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  ).sort((a, b) => {
+    if (filterBy === 'Ordre alphabétique') {
+      return a.title.localeCompare(b.title);
+    } else if (filterBy === 'Popularité') {
+      return (b.popularity ?? 0) - (a.popularity ?? 0);
+    }
+    return 0;
+  }
   );
 
   return (
@@ -86,12 +96,14 @@ function SeriesList({ searchQuery }: { searchQuery: string }) {
 
 export default function ShowOfTheMoment({ path }: { path: string }) {
   const [search, setSearch] = useState('');
+  const [filterBy, setFilterBy] = useState('Ordre alphabétique');
 
   return (
     <QueryClientProvider client={queryClient}>
       <View>
         <M3SearchBar value={search} onChangeText={setSearch} />
-        <SeriesList searchQuery={search} />
+        <Filter filterBy={filterBy} onFilterChange={setFilterBy} />
+        <SeriesList searchQuery={search} filterBy={filterBy} />
       </View>
     </QueryClientProvider>
   );
