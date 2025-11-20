@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // Don't forget useState!
 import { StyleSheet, Image, Pressable, ActivityIndicator, ColorSchemeName } from 'react-native';
 import { Link } from 'expo-router';
 import { Text, View } from './Themed';
@@ -6,6 +6,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialIcons } from '@expo/vector-icons';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import M3SearchBar from './M3SearchBar';
 
 const queryClient = new QueryClient();
 
@@ -14,8 +15,8 @@ export type Serie = {
   title: string;
   description: string;
   director: string;
-  episodes: Episode[];
-  imageUrl: string;
+  episodesInfos: Episode[];
+  image: string;
 };
 
 export type Episode = {
@@ -33,11 +34,10 @@ const Card = ({ serie }: { serie: Serie }) => {
     <View style={styles.card}>
       <Text style={styles.titleText}>{serie.title}</Text>
       <Text style={styles.descText}>{serie.description}</Text>
-      <Image style={styles.image} source={{ uri: serie.imageUrl || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
+      <Image style={styles.image} source={{ uri: serie.image || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
       <Link href={{
         pathname: '/modal',
-        params: { title: serie.title, description: serie.description, director: serie.director, episodes: JSON.stringify(serie.episodes), imageUrl: serie.imageUrl, type: 'series'},
-      }} asChild>
+        params: { title: serie.title, description: serie.description, director: serie.director, episodesInfos: JSON.stringify(serie.episodesInfos), image: serie.image, type: 'series'}}} asChild>
         <Pressable style={styles.button}>
           <MaterialIcons name="play-arrow" size={24} style={styles.buttonIcon} />
           <Text style={styles.buttonText}>Voir la série</Text>
@@ -47,7 +47,8 @@ const Card = ({ serie }: { serie: Serie }) => {
   );
 };
 
-function SeriesList() {
+
+function SeriesList({ searchQuery }: { searchQuery: string }) {
   const colorScheme = useColorScheme();
   const styles = getStyles(colorScheme);
 
@@ -67,20 +68,30 @@ function SeriesList() {
     return <Text>Error loading data</Text>;
   }
 
+  const filteredSeries = (series || []).filter((serie) => 
+    serie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {(series || []).map((serie) => (
+      {filteredSeries.map((serie) => (
         <Card key={serie.id} serie={serie} />
       ))}
+      {filteredSeries.length === 0 && series && (
+        <Text style={{ marginTop: 20, opacity: 0.5 }}>No results found</Text>
+      )}
     </View>
   );
 }
 
 export default function ShowOfTheMoment({ path }: { path: string }) {
+  const [search, setSearch] = useState('');
+
   return (
     <QueryClientProvider client={queryClient}>
       <View>
-        <SeriesList />
+        <M3SearchBar value={search} onChangeText={setSearch} />
+        <SeriesList searchQuery={search} />
       </View>
     </QueryClientProvider>
   );

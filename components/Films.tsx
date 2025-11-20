@@ -6,6 +6,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialIcons } from '@expo/vector-icons';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import M3SearchBar from './M3SearchBar';
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,7 @@ export type Film = {
   title: string;
   description: string;
   director: string;
-  imageUrl: string;
+  image: string;
 };
 
 const Card = ({ film }: { film: Film }) => {
@@ -25,10 +26,10 @@ const Card = ({ film }: { film: Film }) => {
     <View style={styles.card}>
       <Text style={styles.titleText}>{film.title}</Text>
       <Text style={styles.descText}>{film.description}</Text>
-      <Image style={styles.image} source={{ uri: film.imageUrl || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
+      <Image style={styles.image} source={{ uri: film.image || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} />
       <Link href={{
         pathname: '/modal',
-        params: { title: film.title, description: film.description, director: film.director, imageUrl: film.imageUrl, type: 'film' },
+        params: { title: film.title, description: film.description, director: film.director, image: film.image, type: 'film' },
       }} asChild>
         <Pressable style={styles.button}>
           <MaterialIcons name="play-arrow" size={24} style={styles.buttonIcon} />
@@ -39,7 +40,7 @@ const Card = ({ film }: { film: Film }) => {
   );
 };
 
-function FilmsList() {
+function FilmsList({ searchQuery }: { searchQuery: string }) {
   const colorScheme = useColorScheme();
   const styles = getStyles(colorScheme);
   const SERVER_URL = process.env.EXPO_PUBLIC_FILM_SERVER || '';
@@ -60,20 +61,30 @@ function FilmsList() {
     return <Text>Error loading data</Text>;
   }
 
+  const filteredFilms = (series || []).filter((film) => 
+    film.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-      {(series || []).map((serie) => (
-        <Card key={serie.id} film={serie} />
+      {filteredFilms.map((film) => (
+        <Card key={film.id} film={film} />
       ))}
+      {filteredFilms.length === 0 && series && (
+        <Text style={{ marginTop: 20, opacity: 0.5 }}>No results found</Text>
+      )}
     </View>
   );
 }
 
 export default function FilmsOfTheMoment({ path }: { path: string }) {
+  const [search, setSearch] = React.useState('');
+
   return (
     <QueryClientProvider client={queryClient}>
       <View>
-        <FilmsList />
+        <M3SearchBar value={search} onChangeText={setSearch} />
+        <FilmsList searchQuery={search}  />
       </View>
     </QueryClientProvider>
   );

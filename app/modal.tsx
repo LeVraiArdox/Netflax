@@ -10,13 +10,13 @@ import { useColorScheme } from '@/components/useColorScheme';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function ModalScreen() {
-  const { title, description, director, episodes, imageUrl } = useLocalSearchParams() as unknown as {
+  const { title, description, director, episodesInfos, image } = useLocalSearchParams() as unknown as {
     id: string;
     title: string;
     description: string;
     director: string;
-    episodes: Episode[];
-    imageUrl: string;
+    episodesInfos: Episode[];
+    image: string;
   };
 
   const style = styles();
@@ -25,7 +25,7 @@ export default function ModalScreen() {
       <View style={style.container}>
         <Text style={style.title}>{title}</Text>
         <View style={style.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <About title={title} description={description} director={director} episodes={episodes} imageUrl={imageUrl} type={''}/>
+        <About title={title} description={description} director={director} episodesInfos={episodesInfos} image={image} type={''}/>
       </View>
     </ScrollView>
   );
