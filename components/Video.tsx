@@ -1,10 +1,14 @@
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { StyleSheet, View } from 'react-native';
 
-const videoSource = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+const videoSources = [
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    ];
 
-export default function VideoScreen() {
-  const player = useVideoPlayer(videoSource, player => {
+export default function VideoScreen({ videoIndex = 0 }: { videoIndex?: number }) {
+  const player = useVideoPlayer(videoSources[videoIndex], player => {
     player.loop = false;
     player.play();
   });

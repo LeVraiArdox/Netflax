@@ -89,6 +89,13 @@ export default function TabLayout() {
         </View>
         ),
         tabBarIcon: ({ color }) => <TabBarIcon name="tv" color={color} />,
+        headerRight: () => (
+        <Link href="/admin" asChild>
+          <Pressable style={{ marginRight: 15, backgroundColor: Colors[colorScheme ?? 'light'].secondaryContainer, padding: 6, width: 60, borderRadius: 80, alignItems: 'center'}}>
+            <MaterialIcons name="admin-panel-settings" size={25} color={Colors[colorScheme ?? 'light'].onSecondaryContainer}/>
+          </Pressable>
+        </Link>
+        ),
       }}
       />
       <Tabs.Screen

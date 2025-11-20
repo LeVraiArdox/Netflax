@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Image, Pressable } from 'react-native';
 
 import { Text, View } from './Themed';
 
@@ -12,6 +12,7 @@ import VideoScreen from './Video';
 
 export default function About({ title, description, director, episodesInfos, image, type }: { title: string; description: string; director: string; episodesInfos: Episode[]; image: string; type: string }) {
   const episodeList: Array<Episode> = episodesInfos !== undefined ? Array.isArray(episodesInfos) ? episodesInfos : JSON.parse(episodesInfos as unknown as string) : [];
+  const [videoIndex, setVideoIndex] = useState(0);
   return (
       <View style={styles().getStartedContainer}>
         <Image source={{ uri: image || require("@/assets/images/placeholder.png") }} style={styles().image} />
@@ -29,16 +30,19 @@ export default function About({ title, description, director, episodesInfos, ima
 
                 <View>
                     {episodeList.map((episode: { title: string; duration: string; description: string }) => (
-                        <View style={styles().episodeBox} key={episode.title}>
+                        <Pressable style={styles().episodeBox} key={episode.title} onPress={() => {
+                            const index = episodeList.findIndex((ep) => ep.title === episode.title);
+                            setVideoIndex(index);
+                        }}>
                             <Text style={[styles().text, { fontWeight: '600', marginBottom: 5 }]}>{episode.title} ({episode.duration})</Text>
                             <Text style={styles().subText}>{episode.description}</Text>
-                        </View>
+                        </Pressable>
                     ))}
                 </View>
             </>
         )}
 
-        <VideoScreen />
+        <VideoScreen videoIndex={videoIndex} />
     </View>
   );
 }
@@ -59,7 +63,6 @@ const styles = () => {
     },
     text: {
         fontSize: 17,
-        lineHeight: 24,
         textAlign: 'center',
         color: Colors[colorScheme ?? 'light'].onSecondaryContainer,
     },
