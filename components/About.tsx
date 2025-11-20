@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 
-import { ExternalLink } from './ExternalLink';
-import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
 import { Episode } from './Series';
@@ -10,11 +8,11 @@ import { Episode } from './Series';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 
-export default function About({ title, description, director, episodes, imageUrl }: { title: string; description: string; director: string; episodes: Episode[]; imageUrl: string }) {
-  const epidodeList = Array.isArray(episodes) ? episodes : JSON.parse(episodes as unknown as string);
+export default function About({ title, description, director, episodes, imageUrl, type }: { title: string; description: string; director: string; episodes: Episode[]; imageUrl: string; type: string }) {
+  const episodeList: Array<Episode> = episodes !== undefined ? Array.isArray(episodes) ? episodes : JSON.parse(episodes as unknown as string) : [];
   return (
       <View style={styles().getStartedContainer}>
-        <Image source={{ uri: imageUrl }} style={styles().image} />
+        <Image source={{ uri: imageUrl || 'https://powerspaces.com/wp-content/uploads/2024/09/placeholder-2.png' }} style={styles().image} />
 
         <View style={{ marginVertical: 20 }}></View>
 
@@ -23,14 +21,19 @@ export default function About({ title, description, director, episodes, imageUrl
         </Text>
         <View style={{ marginVertical: 10 }}></View>
 
-        <Text style={[styles().text, { fontWeight: 'bold', marginBottom: 10 }]}>Episodes:</Text>
-
-        {epidodeList.map((episode: { title: string; duration: string; description: string }) => (
-            <View style={styles().episodeBox}>
-                <Text style={[styles().text, { fontWeight: '600', marginBottom: 5 }]}>{episode.title} ({episode.duration})</Text>
-                <Text style={styles().subText}>{episode.description}</Text>
-            </View>
-        ))}
+        {episodeList.length > 0 && (
+            <>
+                <Text style={[styles().text, { fontWeight: 'bold', marginBottom: 10 }]}>Episodes:</Text>
+                <View>
+                    {episodeList.map((episode: { title: string; duration: string; description: string }) => (
+                        <View style={styles().episodeBox} key={episode.title}>
+                            <Text style={[styles().text, { fontWeight: '600', marginBottom: 5 }]}>{episode.title} ({episode.duration})</Text>
+                            <Text style={styles().subText}>{episode.description}</Text>
+                        </View>
+                    ))}
+                </View>
+            </>
+        )}
     </View>
   );
 }

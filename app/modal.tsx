@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, ScrollView } from 'react-native';
 
 import About from '@/components/About';
@@ -26,7 +25,7 @@ export default function ModalScreen() {
       <View style={style.container}>
         <Text style={style.title}>{title}</Text>
         <View style={style.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <About title={title} description={description} director={director} episodes={episodes} imageUrl={imageUrl}/>
+        <About title={title} description={description} director={director} episodes={episodes} imageUrl={imageUrl} type={''}/>
       </View>
     </ScrollView>
   );
