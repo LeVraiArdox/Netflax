@@ -6,15 +6,16 @@ interface TextAreaProps {
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
+  style?: object;
 }
 
-export default function TextArea({ value, onChangeText, placeholder }: TextAreaProps) {
+export default function TextArea({ value, onChangeText, placeholder, style }: TextAreaProps) {
   const colorScheme = useColorScheme();
   const styles = getStyles(colorScheme);
   
   return (
     <TextInput
-      style={styles.textArea}
+      style={[styles.textArea, style]}
       multiline
       numberOfLines={4}
       placeholder={placeholder || "Écrivez ici..."}
@@ -32,13 +33,15 @@ const getStyles = (colorScheme: ColorSchemeName) => {
     textArea: {
       height: 50,
       width: '90%',
-      textAlignVertical: 'top',
-      backgroundColor: themeColors.surfaceContainerHighest,
-      borderRadius: 10,
+      backgroundColor: themeColors.surfaceContainerHigh,
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
       padding: 10,
       fontSize: 16,
       color: themeColors.onSurfaceVariant,
       marginVertical: 10,
+      borderBottomColor: themeColors.outlineVariant,
+      borderBottomWidth: 1,
     },
   });
 }

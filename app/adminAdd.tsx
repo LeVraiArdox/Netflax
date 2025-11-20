@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text } from '@/components/Themed';
-import { StyleSheet, ColorSchemeName, Pressable } from 'react-native';
+import { StyleSheet, ColorSchemeName, Pressable, ScrollView } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import TextArea from '@/components/TextArea';
 import { router } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
+import SwitchComponent from '@/components/Switch';
 
 interface AdminAddProps {
     title: string;
@@ -12,7 +14,7 @@ interface AdminAddProps {
     director: string;
     image?: string;
     season?: number;
-    type: 'film' | 'series';
+    type: 'film' | 'serie';
 }
 
 async function addNewSerie(data: any) {
@@ -48,7 +50,7 @@ export default function AdminAdd() {
     const [director, setDirector] = React.useState('');
     const [image, setImage] = React.useState('');
     const [season, setSeason] = React.useState('');
-    const [type, setType] = React.useState<'film' | 'series'>('film');
+    const [type, setType] = React.useState<'film' | 'serie'>('film');
 
     const handleSubmit = async () => {
         const data: AdminAddProps = { title, description, director, image, season: Number(season), type };
@@ -61,28 +63,35 @@ export default function AdminAdd() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Admin Add Content Page</Text>
-            <TextArea placeholder="Type (film or series)" value={type} onChangeText={(text: string) => {
-                // Allow typing by casting, validation should happen elsewhere or use a selector
-                setType(text as 'film' | 'series');
-                if (text === 'film' || text === 'series') {
-                    setType(text);
-                }
-            }} />
-            <TextArea placeholder="Title" value={title} onChangeText={setTitle} />
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.titleContainer}>
+                <MaterialIcons name="lightbulb" size={24} color={Colors[useColorScheme() ?? 'light'].onSurface} style={{ margin: 10 }} />
+                <Text style={styles.title}>Ajouter un nouveau contenu</Text>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text style={styles.entryTitle}>Type: {type}</Text>
+                <SwitchComponent enabled={type === 'serie'} onToggle={() => setType(type === 'film' ? 'serie' : 'film')} style={{ marginRight: 20 }} />
+            </View>
+            {/* <Text style={styles.entryTitle}>Titre</Text> */}
+            <TextArea placeholder="Titre" value={title} onChangeText={setTitle} />
+            {/* <Text style={styles.entryTitle}>Description</Text> */}
             <TextArea placeholder="Description" value={description} onChangeText={setDescription} />
-            <TextArea placeholder="Director" value={director} onChangeText={setDirector} />
+            {/* <Text style={styles.entryTitle}>Réalisateur</Text> */}
+            <TextArea placeholder="Réalisateur" value={director} onChangeText={setDirector} />
+            {/* <Text style={styles.entryTitle}>Image URL</Text> */}
             <TextArea placeholder="Image URL" value={image} onChangeText={setImage} />
-            {type === 'series' && (
-                <TextArea placeholder="Season" value={season} onChangeText={setSeason} />
+            {type === 'serie' && (
+                <>
+                    {/* <Text style={styles.entryTitle}>Saisons</Text> */}
+                    <TextArea placeholder="Saisons" value={season} onChangeText={setSeason} />
+                </>
             )
 
             }
             <Pressable onPress={handleSubmit} style={{ marginTop: 20, backgroundColor: Colors[useColorScheme() ?? 'light'].primary, padding: 10, borderRadius: 5 }}>
                 <Text style={{ color: Colors[useColorScheme() ?? 'light'].onPrimary, textAlign: 'center' }}>Submit</Text>
             </Pressable>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -96,13 +105,31 @@ const getStyles = (colorScheme: ColorSchemeName) => {
     },
     title: {
       fontSize: 20,
-      fontWeight: 'bold',
-      color: Colors[colorScheme ?? 'light'].primary,
+      color: Colors[colorScheme ?? 'light'].onSurface,
+      margin: 10,
+    },
+    titleContainer: {
+      marginBottom: 20,
+      alignItems: 'center',
+      backgroundColor: Colors[colorScheme ?? 'light'].tertiaryContainer,
+      padding: 10,
+      borderRadius: 30,
+      justifyContent: 'center',
+      display: 'flex',
+      flexDirection: 'row',
     },
     separator: {
       marginVertical: 30,
       height: 1,
       width: '80%',
+    },
+    entryTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: Colors[colorScheme ?? 'light'].onSurfaceVariant,
+      alignSelf: 'flex-start',
+      marginLeft: 20,
+      marginTop: 10,
     },
   });
 }

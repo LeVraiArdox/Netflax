@@ -34,8 +34,8 @@ const getStyles = (colorScheme: ColorSchemeName) => {
       right: 30,
       width: 75,
       height: 75,
-      borderRadius: 30,
-      backgroundColor: themeColors.primary,
+      borderRadius: 25,
+      backgroundColor: themeColors.tertiary,
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 100,
@@ -46,7 +46,7 @@ const getStyles = (colorScheme: ColorSchemeName) => {
       elevation: 5,
     },
     fabIcon: {
-      color: themeColors.onPrimary,
+      color: themeColors.onTertiary,
       fontSize: 30,
     },
   });

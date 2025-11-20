@@ -55,9 +55,12 @@ export default function AdminContentLine() {
       {
         series.data?.map((serie: any) => 
         <View key={serie.id} style={styles.container}>
-            <View style={{ display: 'flex', flexDirection: 'column'}}>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons name="tv" size={24} color={Colors[colorScheme ?? 'light'].onSurface} style={{ marginRight: 10 }} />
+              <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Text style={styles.label}>{serie.title}</Text>
                 <Text style={styles.value}>{serie.description}</Text>
+              </View>
             </View>
             <Pressable onPress={() => deleteSerie(serie.id)}>
                 <MaterialIcons name="delete" size={24} style={styles.icon} />
@@ -67,9 +70,12 @@ export default function AdminContentLine() {
       }
       {films.data?.map((film: any) => 
         <View key={film.id} style={styles.container}>
-            <View style={{ display: 'flex', flexDirection: 'column'}}>
-                <Text style={styles.label}>{film.title}</Text>
-                <Text style={styles.value}>{film.description}</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialIcons name="movie" size={24} color={Colors[colorScheme ?? 'light'].onSurface} style={{ marginRight: 10 }} />
+              <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <Text style={styles.label}>{film.title}</Text>
+                  <Text style={styles.value}>{film.description || '(Pas de description)'}</Text>
+              </View>
             </View>
             <Pressable onPress={() => deleteFilm(film.id)}>
                 <MaterialIcons name="delete" size={24} style={styles.icon} />
