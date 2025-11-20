@@ -22,7 +22,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ardox.netflax"
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +33,7 @@
     "plugins": [
       "expo-router",
       [
-      "expo-font",
+        "expo-font",
         {
           "fonts": [
             "./assets/fonts/Rubik-Regular.ttf",
@@ -59,6 +60,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9f15cddb-0fec-45be-b139-ffd8f631d21a"
+      }
     }
   }
 }
